@@ -1,0 +1,23 @@
+name: flutter_scenario_recorder
+description: >-
+  Deterministic UI scenario automation, highlight/touch overlays, and
+  frame-accurate FFmpeg MP4 video rendering for Flutter apps.
+version: 0.1.0
+repository: https://github.com/BreadKey/flutter_scenario_recorder
+publish_to: 'none'
+
+environment:
+  sdk: ^3.10.0
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+
+executables:
+  render_video: render_video
