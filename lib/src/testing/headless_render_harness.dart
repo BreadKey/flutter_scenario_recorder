@@ -29,8 +29,22 @@ class ScenarioHeadlessHarness {
 
   /// Flutter SDK 내장 `MaterialIcons` 폰트를 로드한다.
   static Future<void> loadMaterialIconsFont() async {
-    final flutterRoot =
-        Platform.environment['FLUTTER_ROOT'] ?? '/Users/breadkey/dev/flutter';
+    String? flutterRoot = Platform.environment['FLUTTER_ROOT'];
+    if (flutterRoot == null || !Directory(flutterRoot).existsSync()) {
+      final whichRes = await Process.run('which', ['flutter']);
+      if (whichRes.exitCode == 0) {
+        final resolved = whichRes.stdout.toString().trim();
+        if (resolved.isNotEmpty) {
+          flutterRoot = File(
+            File(resolved).resolveSymbolicLinksSync(),
+          ).parent.parent.path;
+        }
+      }
+    }
+    final home = Platform.environment['HOME'];
+    flutterRoot ??= (home != null && Directory('$home/dev/flutter').existsSync())
+        ? '$home/dev/flutter'
+        : '$home/flutter';
     await loadFontFamily('MaterialIcons', [
       '$flutterRoot/bin/cache/artifacts/material_fonts/MaterialIcons-Regular.otf',
     ]);

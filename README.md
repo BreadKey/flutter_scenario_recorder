@@ -45,7 +45,8 @@ Add `flutter_scenario_recorder` to your `pubspec.yaml`:
 dependencies:
   flutter_scenario_recorder:
     git:
-      url: git@github.com:BreadKey/flutter_scenario_recorder.git
+      url: https://github.com/BreadKey/flutter_scenario_recorder.git
+      ref: main
 ```
 
 ### 2. Wrap Your App with `ScenarioStage`

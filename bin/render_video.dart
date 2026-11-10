@@ -79,9 +79,6 @@ Future<String> _resolveFlutterBin() async {
   if (envRoot != null && File('$envRoot/bin/flutter').existsSync()) {
     return '$envRoot/bin/flutter';
   }
-  if (File('/Users/breadkey/dev/flutter/bin/flutter').existsSync()) {
-    return '/Users/breadkey/dev/flutter/bin/flutter';
-  }
   final whichRes = await Process.run('which', ['flutter']);
   if (whichRes.exitCode == 0) {
     final resolved = whichRes.stdout.toString().trim();
@@ -89,5 +86,17 @@ Future<String> _resolveFlutterBin() async {
       return File(resolved).resolveSymbolicLinksSync();
     }
   }
-  throw StateError('Could not locate flutter executable.');
+  final home = Platform.environment['HOME'];
+  for (final candidate in [
+    if (home != null) '$home/dev/flutter/bin/flutter',
+    if (home != null) '$home/flutter/bin/flutter',
+    if (home != null) '$home/fvm/default/bin/flutter',
+    '/opt/homebrew/bin/flutter',
+    '/usr/local/bin/flutter',
+  ]) {
+    if (File(candidate).existsSync()) {
+      return File(candidate).resolveSymbolicLinksSync();
+    }
+  }
+  throw StateError('Could not locate flutter executable in PATH or FLUTTER_ROOT.');
 }
